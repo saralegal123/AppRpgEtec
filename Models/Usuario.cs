@@ -15,7 +15,7 @@ namespace AppRpgEtec.Models
         public string Token { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public byte[]? Foto { get; set; }
-        public double? Latitude { get; set; }
+        public double? Latitude { get; set; } //? - pode ser algo ou nada
         public double? Longitude { get; set; }
     }
 }

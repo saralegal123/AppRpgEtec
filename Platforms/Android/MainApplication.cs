@@ -3,7 +3,8 @@ using Android.Runtime;
 
 namespace AppRpgEtec
 {
-    [Application]
+    //habilitar o trafico de dados para ele transitar no meio externo
+    [Application(UsesCleartextTraffic=true)]
     public class MainApplication : MauiApplication
     {
         public MainApplication(IntPtr handle, JniHandleOwnership ownership)
