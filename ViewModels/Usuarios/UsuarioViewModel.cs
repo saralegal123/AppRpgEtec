@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using AppRpgEtec.Models;
 using AppRpgEtec.Services.Usuarios;
+using AppRpgEtec.Views.Personagens;
+using AppRpgEtec.Views.Usuarios;
+using Microsoft.Maui.Controls;
 
 namespace AppRpgEtec.ViewModels.Usuarios
 {
@@ -22,11 +25,15 @@ namespace AppRpgEtec.ViewModels.Usuarios
         public void InicializarCommands()
         {
             AutenticarCommand = new Command(async () => await AutenticarUsuario()); // comando que executa a autenticação
+            RegistrarCommand = new Command(async () => await RegistrarUsuario()); // comando que executa o registro
+            DirecionarCadastroCommand = new Command(async () => await DirecionarParaCadastro()); // comando que executa o direcionamento
         }
 
         private UsuarioService uService; // instância do serviço de usuário
 
         public ICommand AutenticarCommand { get; set; } // comando que será vinculado ao botão de login
+        public ICommand RegistrarCommand { get; set; } // comando que será vinculado ao metodo de registrar usuário
+        public ICommand DirecionarCadastroCommand { get; set; } //vinculação para direcionar para cadastro
 
         #region AtributosPropriedades
 
@@ -74,7 +81,7 @@ namespace AppRpgEtec.ViewModels.Usuarios
                 //! - garante que o token não seja null ou vazio antes de prosseguir. Caso contrário, nao vai rolar logar no negocio
                 if (!string.IsNullOrEmpty(uAutenticado.Token))
                 {
-                    string mensagem = $"Bem-vindo(a) {uAutenticado.Username}";
+                    string mensagem = $"Bem-vindo(a), {uAutenticado.Username}";
 
                     //guardando dados para uso futuro
                     Preferences.Set("UsuarioId", uAutenticado.Id);
@@ -84,7 +91,7 @@ namespace AppRpgEtec.ViewModels.Usuarios
 
                     await Application.Current.MainPage.DisplayAlert("Informação", mensagem, "Ok"); // exibe mensagem de boas-vindas
 
-                    Application.Current.MainPage = new MainPage(); // redireciona para a tela principal
+                    Application.Current.MainPage = new ListagemView(); // redireciona para a tela principal
                 }
                 else
                 {
@@ -98,5 +105,51 @@ namespace AppRpgEtec.ViewModels.Usuarios
         }
 
         #endregion
+
+        #region Métodos
+
+        public async Task RegistrarUsuario() // Método para registrar um usuário
+        {
+            try
+            {
+                Usuario u = new Usuario();
+                u.Username = Login;
+                u.PassowordString = Senha;
+
+                Usuario uRegistrado = await uService.PostRegistrarUsuarioAsync(u);
+
+                //! = significa DIFERENTE 
+                if (uRegistrado.Id != 0)
+                {
+                    string mensagem = $"Usuário Id {uRegistrado.Id}, registrado com sucesso";
+                    await Application.Current.MainPage.DisplayAlert("Informação", mensagem, "Ok");
+
+                    await Application.Current.MainPage
+                        .Navigation.PopAsync();// remove a página da pilha de visualização
+                }
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage
+                    .DisplayAlert("Informação", ex.Message + " Detalhes: " + ex.InnerException, "Ok");
+            }
+        }
+        #endregion
+
+        public async Task DirecionarParaCadastro() //método para exibição da view de Cadastro
+        {
+            try
+            {
+                await Application.Current.MainPage
+                    .Navigation.PushAsync(new CadastroView());
+            }
+            catch (Exception ex)
+            {
+                {
+                    await Application.Current.MainPage
+                        .DisplayAlert("Informação", ex.Message + "Deatlhes: " + ex.InnerException, "Ok");
+                }
+            }
+        }
     }
 }

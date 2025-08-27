@@ -13,8 +13,8 @@ namespace AppRpgEtec.Services.Usuarios
         private readonly Request _request;
 
         // define a URL base da API 
-        private const string _apiurlBase = "http://rpgsaramarcely.azurewebsites.netUsuarios";
-
+        private const string _apiurlBase = "https://rpgsaramarcely.azurewebsites.net/Usuarios";
+        
         // construtor da classe, inicializa o objeto _request
         public UsuarioService()
         {
@@ -28,7 +28,7 @@ namespace AppRpgEtec.Services.Usuarios
             string urlComplementar = "/Registrar";
 
             // envia os dados do usuário para a API usando POST e espera um inteiro como retorno
-            await _request.PostReturnIntAsync(_apiurlBase + urlComplementar, u, string.Empty);
+           u.Id = await _request.PostReturnIntAsync(_apiurlBase + urlComplementar, u, string.Empty);
 
             // retorna o objeto usuário recebido como parâmetro
             return u;
