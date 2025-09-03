@@ -91,7 +91,7 @@ namespace AppRpgEtec.ViewModels.Usuarios
 
                     await Application.Current.MainPage.DisplayAlert("Informação", mensagem, "Ok"); // exibe mensagem de boas-vindas
 
-                    Application.Current.MainPage = new ListagemView(); // redireciona para a tela principal
+                    Application.Current.MainPage = new AppShell(); // redireciona para a tela principal
                 }
                 else
                 {
