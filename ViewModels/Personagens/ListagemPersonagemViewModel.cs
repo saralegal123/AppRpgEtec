@@ -13,33 +13,32 @@ namespace AppRpgEtec.ViewModels.Personagens
     public class ListagemPersonagemViewModel : BaseViewModel
     {
         private PersonagemService pService;
-
         public ObservableCollection<Personagem> Personagens { get; set; }
-
-        public ListagemPersonagemViewModel() // Construtor único
+        public ListagemPersonagemViewModel()
         {
             string token = Preferences.Get("UsuarioToken", string.Empty);
             pService = new PersonagemService(token);
             Personagens = new ObservableCollection<Personagem>();
 
-            _ = ObterPersonagens(); // Chamada para carregar os dados
+            _ = ObterPersonagens();
 
             NovoPersonagemCommand = new Command(async () => { await ExibirCadastroPersonagem(); });
+            RemoverPersonagemCommand = new Command<Personagem>(async (Personagem p) => { await RemoverPersonagem(p); });
+
         }
-
         public ICommand NovoPersonagemCommand { get; }
-
+        public ICommand RemoverPersonagemCommand { get; set; }
 
         public async Task ObterPersonagens()
         {
             try
             {
                 Personagens = await pService.GetPersonagensAsync();
-                OnPropertyChanged(nameof(Personagens)); // Informa à View que a lista foi atualizada
+                OnPropertyChanged(nameof(Personagens));
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("Ops", ex.Message + " Detalhes: " + ex.InnerException, "Ok");
+                await Application.Current.MainPage.DisplayAlert("Ops", ex.Message + "Detalhe: " + ex.InnerException, "Ok");
             }
         }
 
@@ -51,9 +50,28 @@ namespace AppRpgEtec.ViewModels.Personagens
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage
-                    .DisplayAlert("Ops", ex.Message + "Detalhes: " + ex.InnerException, "Ok");
+                await Application.Current.MainPage.DisplayAlert("Ops", ex.Message + "Detalhes: " + ex.InnerException, "Ok");
             }
         }
+        public async Task RemoverPersonagem(Personagem p)
+        {
+            try
+            {
+                if (await Application.Current.MainPage.DisplayAlert("Confiramação", $"Confirma a remoção de {p.Nome}?", "Sim", "Não"))
+                {
+                    await pService.DeletePersonagemAsync(p.Id);
+
+                    await Application.Current.MainPage.DisplayAlert("Messagem", "Personagem removido com sucesso!", "OK");
+
+                    _ = ObterPersonagens();
+                }
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Ops", ex.Message + "Detalhes: " + ex.InnerException, "OK");
+            }
+        }
+
+
     }
 }
