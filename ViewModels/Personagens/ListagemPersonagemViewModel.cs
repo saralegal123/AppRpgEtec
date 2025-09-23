@@ -24,10 +24,12 @@ namespace AppRpgEtec.ViewModels.Personagens
 
             NovoPersonagemCommand = new Command(async () => { await ExibirCadastroPersonagem(); });
             RemoverPersonagemCommand = new Command<Personagem>(async (Personagem p) => { await RemoverPersonagem(p); });
+            NovaArmaCommand = new Command(async () => { await ExibirCadastroArma(); });
 
         }
         public ICommand NovoPersonagemCommand { get; }
         public ICommand RemoverPersonagemCommand { get; set; }
+        public ICommand NovaArmaCommand { get; }
 
         public async Task ObterPersonagens()
         {
@@ -47,6 +49,18 @@ namespace AppRpgEtec.ViewModels.Personagens
             try
             {
                 await Shell.Current.GoToAsync("cadPersonagemView");
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Ops", ex.Message + "Detalhes: " + ex.InnerException, "Ok");
+            }
+        }
+
+        public async Task ExibirCadastroArma()
+        {
+            try
+            {
+                await Shell.Current.GoToAsync("cadArmaView");
             }
             catch (Exception ex)
             {
