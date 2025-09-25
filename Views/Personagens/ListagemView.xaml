@@ -24,7 +24,6 @@
                             <StackLayout Padding="10">
                                 <Label Text="{Binding Nome}" FontSize="18" FontAttributes="Bold"/>
                                 <Label Text="{Binding PontosVida}" FontSize="14"/>
-                                <Label Text="{Binding Arma}" FontSize="14"/>
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>

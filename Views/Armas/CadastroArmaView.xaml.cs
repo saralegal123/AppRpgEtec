@@ -4,13 +4,13 @@ namespace AppRpgEtec.Views.Armas;
 
 public partial class CadastroArmaView : ContentPage
 {
-	private CadastroArmaViewModel cadViewModel;
-	public CadastroArmaView()
-	{
-		InitializeComponent();
+    private CadastroArmaViewModel cadViewModel;
+    public CadastroArmaView()
+    {
+        InitializeComponent();
 
-		cadViewModel = new CadastroArmaViewModel();
-		BindingContext = cadViewModel;
-		Title = "Nova Arma";
-	}
+        cadViewModel = new CadastroArmaViewModel();
+        BindingContext = cadViewModel;
+        Title = "Nova Arma";
+    }
 }

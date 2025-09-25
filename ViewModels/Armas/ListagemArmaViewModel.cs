@@ -14,7 +14,6 @@ namespace AppRpgEtec.ViewModels.Armas
     {
         private ArmaService aService;
         public ObservableCollection<Arma> Armas { get; set; }
-
         public ListagemArmaViewModel()
         {
             string token = Preferences.Get("UsuarioToken", string.Empty);
@@ -29,6 +28,23 @@ namespace AppRpgEtec.ViewModels.Armas
 
         public ICommand NovaArmaCommand { get; }
         public ICommand RemoverArmaCommand { get; set; }
+        private Arma armaSelecionada;
+        public Arma ArmaSelecionada
+        {
+            get
+            {
+                return armaSelecionada;
+            }
+            set
+            {
+                if (value != null)
+                {
+                    armaSelecionada = value;
+
+                    Shell.Current.GoToAsync($"CadArmaView?pId={armaSelecionada.Id}");
+                }
+            }
+        }
 
         public async Task ObterArmas()
         {
@@ -39,7 +55,7 @@ namespace AppRpgEtec.ViewModels.Armas
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("Ops", ex.Message + "Detalhe: " + ex.InnerException, "Ok");
+                await Application.Current.MainPage.DisplayAlert("Ops", ex.Message + "Detalhes: " + ex.InnerException, "OK");
             }
         }
 
@@ -51,7 +67,7 @@ namespace AppRpgEtec.ViewModels.Armas
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("Ops", ex.Message + "Detalhes: " + ex.InnerException, "Ok");
+                await Application.Current.MainPage.DisplayAlert("Ops", ex.Message + "Detalhes" + ex.InnerException, "OK");
             }
         }
 
@@ -59,13 +75,14 @@ namespace AppRpgEtec.ViewModels.Armas
         {
             try
             {
-                if (await Application.Current.MainPage.DisplayAlert("Confirmação", $"Confirma a remoção de {a.Nome}?", "Sim", "Não"))
+                if (await Application.Current.MainPage
+                    .DisplayAlert("Confirmação", $"Confirma a remoção de {a.Nome}?", "Sim", "Não")) ;
                 {
                     await aService.DeleteArmaAsync(a.Id);
 
-                    await Application.Current.MainPage.DisplayAlert("Mensagem", "Arma removida com sucesso!", "OK");
+                    await Application.Current.MainPage.DisplayAlert("Mensagem", "Arma removido com sucesso!", "OK");
 
-                    _ = ObterArmas();
+                    await ObterArmas();
                 }
             }
             catch (Exception ex)
