@@ -68,6 +68,9 @@ namespace AppRpgEtec.ViewModels.Usuarios
 
         #region Metodos
 
+        private CancellationTokenSource _cancelTokenSource;
+        private bool _isCheckingLocation;
+
         public async Task AutenticarUsuario()
         {
             try
@@ -89,18 +92,33 @@ namespace AppRpgEtec.ViewModels.Usuarios
                     Preferences.Set("UsuarioPerfil", uAutenticado.Perfil);
                     Preferences.Set("UsuarioToken", uAutenticado.Token);
 
-                    await Application.Current.MainPage.DisplayAlert("Informação", mensagem, "Ok"); // exibe mensagem de boas-vindas
+                    //coleta de geolocalização
+                    _isCheckingLocation = true;
+                    _cancelTokenSource = new CancellationTokenSource();
+                    GeolocationRequest request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
 
-                    Application.Current.MainPage = new AppShell(); // redireciona para a tela principal
+                    Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
+
+                    Usuario uLoc = new Usuario();
+                    uLoc.Id = uAutenticado.Id;
+                    uLoc.Latitude = uAutenticado.Latitude;
+                    uLoc.Longitude = uAutenticado.Longitude;
+
+                    UsuarioService uServiceLoc = new UsuarioService(uAutenticado.Token);
+                    await uServiceLoc.PutAtualizarLocalizacaoAsync(uLoc);
+
+                    await Application.Current.MainPage.DisplayAlert("Informação", mensagem, "Ok"); 
+
+                    Application.Current.MainPage = new AppShell(); 
                 }
                 else
                 {
-                    await Application.Current.MainPage.DisplayAlert("Informação", "Dados incorretos. (¬_¬ )", "Ok"); // exibe erro de login
+                    await Application.Current.MainPage.DisplayAlert("Informação", "Dados incorretos. (¬_¬ )", "Ok"); 
                 }
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("Informação", ex.Message + ex.InnerException, "Ok"); // exibe erro técnico
+                await Application.Current.MainPage.DisplayAlert("Informação", ex.Message + ex.InnerException, "Ok"); 
             }
         }
 
@@ -108,7 +126,7 @@ namespace AppRpgEtec.ViewModels.Usuarios
 
         #region Métodos
 
-        public async Task RegistrarUsuario() // Método para registrar um usuário
+        public async Task RegistrarUsuario()
         {
             try
             {
@@ -125,7 +143,7 @@ namespace AppRpgEtec.ViewModels.Usuarios
                     await Application.Current.MainPage.DisplayAlert("Informação", mensagem, "Ok");
 
                     await Application.Current.MainPage
-                        .Navigation.PopAsync();// remove a página da pilha de visualização
+                        .Navigation.PopAsync();
                 }
             }
             catch (Exception ex)

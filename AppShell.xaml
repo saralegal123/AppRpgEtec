@@ -3,8 +3,8 @@
     x:Class="AppRpgEtec.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-      xmlns:viewsUsuarios="clr-namespace:AppRpgEtec.Views.Usuarios"
-     xmlns:viewsDisputas="clr-namespace:AppRpgEtec.Views.Disputas"
+    xmlns:viewsUsuarios="clr-namespace:AppRpgEtec.Views.Usuarios"
+    xmlns:viewsDisputas="clr-namespace:AppRpgEtec.Views.Disputas"
     xmlns:viewsPersonagens="clr-namespace:AppRpgEtec.Views.Personagens"
     xmlns:viewsArmas="clr-namespace:AppRpgEtec.Views.Armas"
     Title="AppRpgEtec">
