@@ -68,6 +68,7 @@ namespace AppRpgEtec.ViewModels.Personagens
             {
                 pontosVida = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(CadastroHabilitado)    );
             }
         }
 
@@ -259,6 +260,14 @@ namespace AppRpgEtec.ViewModels.Personagens
                     personagemSelecionadoId = Uri.UnescapeDataString(value);
                     CarregarPersonagem();
                 }
+            }
+        }
+
+        public bool CadastroHabilitado
+        {
+            get
+            {
+                return (PontosVida > 0);
             }
         }
     }
