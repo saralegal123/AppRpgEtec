@@ -40,22 +40,6 @@ namespace AppRpgEtec.ViewModels.Disputas
             get => Oponente.Nome;
         }
 
-        private Personagem personagemSelecionado;
-       
-        public Personagem PersonagemSelecionado
-        {
-            set
-            {
-                if (value != null)
-                {
-                    personagemSelecionado = value;
-                    SelecionarPersonagem(personagemSelecionado);
-                    OnPropertyChanged();
-                    PersonagensEncontrados.Clear();
-                }
-            }
-        }
-
         private string textoBuscaDigitado = string.Empty;
         public string TextoBuscaDigitado
         {
