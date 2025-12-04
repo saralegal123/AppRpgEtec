@@ -13,13 +13,9 @@ namespace AppRpgEtec.Converters
     {
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            ColorTypeConverter converter = new ColorTypeConverter();
+            ColorTypeConverter converter = new ColorTypeConverter(); 
 
-            if (value is not int pontosVida)
-            {
-                return (Color)converter.ConvertFromInvariantString("Gray");
-            }
-
+            int pontosVida = (int)value;
             if (pontosVida == 100)
                 return (Color)converter.ConvertFromInvariantString("SeaGreen");
             else if (pontosVida >= 75)
@@ -30,6 +26,8 @@ namespace AppRpgEtec.Converters
                 return (Color)converter.ConvertFromInvariantString("OrangeRed");
             else
                 return (Color)converter.ConvertFromInvariantString("Red");
+
+
         }
 
         public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

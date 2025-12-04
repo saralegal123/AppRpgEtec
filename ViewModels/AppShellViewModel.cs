@@ -21,6 +21,9 @@ namespace AppRpgEtec.ViewModels
         }
 
         private byte[] foto;
+        private string conexaoAzureStorage;
+        private string container;
+
         public byte[] Foto
         {
             get => foto;
