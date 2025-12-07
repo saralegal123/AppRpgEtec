@@ -16,5 +16,6 @@ namespace AppRpgEtec.Models
         public int HabilidadeId { get; set; } 
         public List<int> ListaIdPersonagem { get; set; } = new List<int>();
         public List<string>  Resultados { get; set; } = new List<string>();
+        public List<int> ListaIdPersonagens { get; internal set; }
     }
 }

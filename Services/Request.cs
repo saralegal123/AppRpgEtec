@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using AppRpgEtec.Models;
 using Newtonsoft.Json;
 
 namespace AppRpgEtec.Services
@@ -115,6 +116,11 @@ return int.Parse(serialized);
 else
 throw new Exception(serialized);
 }
+
+        internal async Task<Disputa> PostAsync(string v, Disputa d)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

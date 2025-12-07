@@ -28,6 +28,10 @@
             </ListView.ItemTemplate>
         </ListView>
 
+        <Button Text="Disputar com Arma" FontAttributes="Bold"
+        Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+        VerticalOptions="FillAndExpand" Command="{Binding DisputaComArmaCommand}"/>
+        
         <Grid HorizontalOptions="Fill" Margin="5, 5, 0, 0" Padding="10, 0, 0, 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
